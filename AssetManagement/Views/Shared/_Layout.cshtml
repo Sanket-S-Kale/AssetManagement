@@ -21,7 +21,7 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    @if (User.IsInRole("ResourceChecker") || User.IsInRole("Admin"))
+                    @if (User.IsInRole("Admin") || User.IsInRole("Resource Checker"))
                     {
                         <li>@Html.ActionLink("Facilities", "Index", "Facilities")</li>
                         <li>@Html.ActionLink("Resources", "Index", "Resources")</li>

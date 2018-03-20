@@ -11,6 +11,11 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security;
 using AssetManagement.Models;
+using SendGrid.Helpers.Mail;
+using System.Net;
+using System.Configuration;
+using System.Diagnostics;
+using SendGrid;
 
 namespace AssetManagement
 {
@@ -18,8 +23,35 @@ namespace AssetManagement
     {
         public Task SendAsync(IdentityMessage message)
         {
-            // Plug in your email service here to send an email.
-            return Task.FromResult(0);
+            return ConfigSendGridasync(message);
+        }
+
+        private async Task ConfigSendGridasync(IdentityMessage message)
+        {
+            var myMessage = new SendGridMessage();
+            myMessage.AddTo(message.Destination);
+            myMessage.From = new EmailAddress("sanket.kale@mavs.uta.edu", "Sanket Kale");
+            myMessage.Subject = message.Subject;
+            myMessage.PlainTextContent = message.Body;
+            myMessage.HtmlContent = message.Body;
+
+            var credentials = new NetworkCredential(
+                       ConfigurationManager.AppSettings["mailAccount"],
+                       ConfigurationManager.AppSettings["mailPassword"]
+                       );
+            
+            var apiKey = "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";
+            var client = new SendGridClient(apiKey);
+
+            // Send the email.
+            if (client != null)
+            {
+                var response = await client.SendEmailAsync(myMessage);
+            }
+            else
+            {
+                //return Task.FromResult(0);
+            }
         }
     }
 
