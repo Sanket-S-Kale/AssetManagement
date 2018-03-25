@@ -9,12 +9,16 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using AssetManagement.Models;
+using AssetManagement.Models.AssetManagement;
+using AssetManagement.Data;
+using System.Collections.Generic;
 
 namespace AssetManagement.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
+        private ApplicationDbContext db = new ApplicationDbContext();
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -139,6 +143,22 @@ namespace AssetManagement.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult Register()
         {
+            ViewBag.Facilities = new List<AssignFacility>();
+            var temp = db.Facilities.Where(x => x.UserId == null).ToList();
+            foreach (var f in temp)
+            {
+                var obj = new AssignFacility
+                {
+                    Name = f.FacilityName,
+                    FacilityId = f.FacilityId,
+                    Assign = false
+                };
+                ViewBag.Facilities.Add(obj);
+            };
+
+            ViewBag.Facilities = new MultiSelectList(ViewBag.Facilities, "FacilityId", "Name");
+
+            ViewBag.Roles = db.Roles.ToList();
             return View();
         }
 
@@ -155,13 +175,20 @@ namespace AssetManagement.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    if (model.IsAdmin)
+                    if (model.RoleId == "Admin")
                     {
                         UserManager.AddToRole(UserManager.FindByEmail(user.Email).Id, "Admin");
                     }
                     else
                     {
                         UserManager.AddToRole(UserManager.FindByEmail(user.Email).Id, "Resource Checker");
+                    }
+                    for(var i = 0; i< model.FacilityList.Count(); i++)
+                    {
+                        Facility facility = db.Facilities.Find(model.FacilityList[i]);
+                        facility.UserId = user.Id;
+                        db.Entry(facility).State = System.Data.Entity.EntityState.Modified;
+                        db.SaveChanges();
                     }
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
 

@@ -75,10 +75,8 @@ namespace AssetManagement.Models
 
         [Required]
         [Display(Name = "Is Admin")]
-       // [System.ComponentModel.DefaultValue(false)]
         public Boolean IsAdmin { get; set; }
 
-        //[Required]
         [Display(Name = "Role")]
         public string RoleId { get; set; }
 
@@ -97,6 +95,9 @@ namespace AssetManagement.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Display(Name = "Facilities")]
+        public List<int> FacilityList { get; set; }
     }
 
     public class ResetPasswordViewModel

@@ -1,5 +1,6 @@
 namespace AssetManagement.Migrations.AccountScripts
 {
+    using AssetManagement.Data;
     using AssetManagement.Models;
     using Microsoft.AspNet.Identity;
     using Microsoft.AspNet.Identity.EntityFramework;
@@ -8,7 +9,7 @@ namespace AssetManagement.Migrations.AccountScripts
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<AssetManagement.Models.ApplicationDbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<AssetManagement.Data.ApplicationDbContext>
     {
         public Configuration()
         {

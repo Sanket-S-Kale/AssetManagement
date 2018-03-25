@@ -4,18 +4,19 @@ using System.Data;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 using AssetManagement.Data;
+using AssetManagement.Models;
 using AssetManagement.Models.AssetManagement;
 
 namespace AssetManagement.Controllers
 {
     public class ResourcesController : Controller
     {
-        private AppContext db = new AppContext();
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Resources
+        [Authorize(Roles = "Admin, Resource Checker")]
         public ActionResult Index()
         {
             var resources = db.Resources.Include(r => r.Facility);
@@ -23,6 +24,7 @@ namespace AssetManagement.Controllers
         }
 
         // GET: Resources/Details/5
+        [Authorize(Roles = "Admin, Resource Checker")]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -30,6 +32,9 @@ namespace AssetManagement.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Resource resource = db.Resources.Find(id);
+
+            Facility facility = db.Facilities.Find(resource.FacilityId);
+            resource.FacilityName = facility.FacilityName;
             if (resource == null)
             {
                 return HttpNotFound();
@@ -38,6 +43,7 @@ namespace AssetManagement.Controllers
         }
 
         // GET: Resources/Create
+        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             ViewBag.FacilityId = new SelectList(db.Facilities, "FacilityId", "FacilityName");
@@ -49,10 +55,13 @@ namespace AssetManagement.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ResourceId,ResourceName,Quantity,Description,Size,Color,FacilityId,UpdatedBy,UpdatedOn,IsActive")] Resource resource)
+        [Authorize(Roles = "Admin")]
+        public ActionResult Create([Bind(Include = "ResourceId,ResourceName,Quantity,Description,Size,Color,FacilityId,UpdatedOn,IsActive")] Resource resource)
         {
             if (ModelState.IsValid)
             {
+                resource.UpdatedOn = DateTime.Now;
+                resource.IsActive = true;
                 db.Resources.Add(resource);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -63,6 +72,7 @@ namespace AssetManagement.Controllers
         }
 
         // GET: Resources/Edit/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -74,6 +84,7 @@ namespace AssetManagement.Controllers
             {
                 return HttpNotFound();
             }
+            
             ViewBag.FacilityId = new SelectList(db.Facilities, "FacilityId", "FacilityName", resource.FacilityId);
             return View(resource);
         }
@@ -83,7 +94,8 @@ namespace AssetManagement.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ResourceId,ResourceName,Quantity,Description,Size,Color,FacilityId,UpdatedBy,UpdatedOn,IsActive")] Resource resource)
+        [Authorize(Roles = "Admin")]
+        public ActionResult Edit([Bind(Include = "ResourceId,ResourceName,Quantity,Description,Size,Color,FacilityId,UpdatedOn,IsActive")] Resource resource)
         {
             if (ModelState.IsValid)
             {
@@ -96,6 +108,7 @@ namespace AssetManagement.Controllers
         }
 
         // GET: Resources/Delete/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -103,6 +116,10 @@ namespace AssetManagement.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Resource resource = db.Resources.Find(id);
+
+            Facility facility = db.Facilities.Find(resource.FacilityId);
+            resource.FacilityName = facility.FacilityName;
+
             if (resource == null)
             {
                 return HttpNotFound();
@@ -111,6 +128,7 @@ namespace AssetManagement.Controllers
         }
 
         // POST: Resources/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

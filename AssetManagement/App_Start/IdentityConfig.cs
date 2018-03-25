@@ -16,6 +16,7 @@ using System.Net;
 using System.Configuration;
 using System.Diagnostics;
 using SendGrid;
+using AssetManagement.Data;
 
 namespace AssetManagement
 {
@@ -35,12 +36,7 @@ namespace AssetManagement
             myMessage.PlainTextContent = message.Body;
             myMessage.HtmlContent = message.Body;
 
-            var credentials = new NetworkCredential(
-                       ConfigurationManager.AppSettings["mailAccount"],
-                       ConfigurationManager.AppSettings["mailPassword"]
-                       );
-            
-            var apiKey = "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";
+            var apiKey = ConfigurationManager.AppSettings["SEND_GRID_API_KEY"];
             var client = new SendGridClient(apiKey);
 
             // Send the email.

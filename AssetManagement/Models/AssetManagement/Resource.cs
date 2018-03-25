@@ -25,10 +25,10 @@ namespace AssetManagement.Models.AssetManagement
         public string Color { get; set; }
 
         [Required]
-        //[System.ComponentModel.DefaultValue(true)]
         public Boolean IsActive { get; set; }
 
         public int FacilityId { get; set; }
+        public string FacilityName { get; set; }
         public Facility Facility { get; set; }
 
     }

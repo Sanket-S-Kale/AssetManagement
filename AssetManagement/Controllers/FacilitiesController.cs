@@ -7,21 +7,24 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using AssetManagement.Data;
+using AssetManagement.Models;
 using AssetManagement.Models.AssetManagement;
 
 namespace AssetManagement.Controllers
 {
     public class FacilitiesController : Controller
     {
-        private AppContext db = new AppContext();
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Facilities
+        [Authorize(Roles = "Admin, Resource Checker")]
         public ActionResult Index()
         {
             return View(db.Facilities.ToList());
         }
 
         // GET: Facilities/Details/5
+        [Authorize(Roles = "Admin, Resource Checker")]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -37,6 +40,7 @@ namespace AssetManagement.Controllers
         }
 
         // GET: Facilities/Create
+        [Authorize(Roles = "Admin")]
         public ActionResult Create()
         {
             return View();
@@ -47,10 +51,13 @@ namespace AssetManagement.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "FacilityId,FacilityName,Landmark,Address,City,State,ZipCode,UpdatedBy,UpdatedOn,IsActive")] Facility facility)
+        [Authorize(Roles = "Admin")]
+        public ActionResult Create([Bind(Include = "FacilityId,FacilityName,Landmark,Address,City,State,ZipCode,UpdatedOn,IsActive")] Facility facility)
         {
             if (ModelState.IsValid)
             {
+                facility.UpdatedOn = DateTime.Now;
+                facility.IsActive = true;
                 db.Facilities.Add(facility);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -60,6 +67,7 @@ namespace AssetManagement.Controllers
         }
 
         // GET: Facilities/Edit/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -79,7 +87,8 @@ namespace AssetManagement.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "FacilityId,FacilityName,Landmark,Address,City,State,ZipCode,UpdatedBy,UpdatedOn,IsActive")] Facility facility)
+        [Authorize(Roles = "Admin")]
+        public ActionResult Edit([Bind(Include = "FacilityId,FacilityName,Landmark,Address,City,State,ZipCode,UpdatedOn,IsActive")] Facility facility)
         {
             if (ModelState.IsValid)
             {
@@ -91,6 +100,7 @@ namespace AssetManagement.Controllers
         }
 
         // GET: Facilities/Delete/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -106,6 +116,7 @@ namespace AssetManagement.Controllers
         }
 
         // POST: Facilities/Delete/5
+        [Authorize(Roles = "Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

@@ -31,8 +31,18 @@ namespace AssetManagement.Models.AssetManagement
         public List<Resource> Resources { get; set; }
 
         [Required]
-        //[System.ComponentModel.DefaultValue(true)]
         public Boolean IsActive { get; set; }
 
+        public ApplicationUser User { get; set; }
+        public String UserId { get; set; }
+    }
+
+    public class AssignFacility
+    {
+        public String Name { get; set; }
+
+        public int FacilityId { get; set; }
+
+        public Boolean Assign { get; set; }
     }
 }
