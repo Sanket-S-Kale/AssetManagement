@@ -194,23 +194,33 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\FacilitiesController.cs" />
+    <Compile Include="Controllers\FacilityReportController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\ResourceInventoryController.cs" />
     <Compile Include="Controllers\ResourcesController.cs" />
+    <Compile Include="Controllers\UsersController.cs" />
     <Compile Include="Data\ApplicationDbContext.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\AccountScripts\201803250811107_ResourcesTest.cs" />
-    <Compile Include="Migrations\AccountScripts\201803250811107_ResourcesTest.Designer.cs">
-      <DependentUpon>201803250811107_ResourcesTest.cs</DependentUpon>
+    <Compile Include="Migrations\AccountScripts\201803300437181_MigrationName.cs" />
+    <Compile Include="Migrations\AccountScripts\201803300437181_MigrationName.Designer.cs">
+      <DependentUpon>201803300437181_MigrationName.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\AccountScripts\201803300506056_Initialized_Resources_in_FacilitesModel.cs" />
+    <Compile Include="Migrations\AccountScripts\201803300506056_Initialized_Resources_in_FacilitesModel.Designer.cs">
+      <DependentUpon>201803300506056_Initialized_Resources_in_FacilitesModel.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\AccountScripts\Configuration.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\AssetManagement\BaseEntity.cs" />
     <Compile Include="Models\AssetManagement\Facility.cs" />
+    <Compile Include="Models\AssetManagement\FacilityReportViewModel.cs" />
+    <Compile Include="Models\AssetManagement\ResourceDetailReportViewModel.cs" />
     <Compile Include="Models\AssetManagement\Resource.cs" />
+    <Compile Include="Models\AssetManagement\ResourceInventory.cs" />
     <Compile Include="Models\AssetManagement\UserFacilities.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -291,6 +301,13 @@
     <Content Include="Views\Resources\Details.cshtml" />
     <Content Include="Views\Resources\Edit.cshtml" />
     <Content Include="Views\Resources\Index.cshtml" />
+    <Content Include="Views\ResourceInventory\Index.cshtml" />
+    <Content Include="Views\FacilityReport\FacilityReport.cshtml" />
+    <Content Include="Views\FacilityReport\ResourceDetailReport.cshtml" />
+    <Content Include="Views\Facilities\ResourcesList.cshtml" />
+    <Content Include="Views\Users\Index.cshtml" />
+    <Content Include="Views\Users\Edit.cshtml" />
+    <Content Include="Views\Users\Delete.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
@@ -308,10 +325,14 @@
     <Content Include="Scripts\jquery-1.10.2.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\AccountScripts\201803250811107_ResourcesTest.resx">
-      <DependentUpon>201803250811107_ResourcesTest.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\AccountScripts\201803300437181_MigrationName.resx">
+      <DependentUpon>201803300437181_MigrationName.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\AccountScripts\201803300506056_Initialized_Resources_in_FacilitesModel.resx">
+      <DependentUpon>201803300506056_Initialized_Resources_in_FacilitesModel.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

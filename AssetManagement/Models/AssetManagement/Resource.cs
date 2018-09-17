@@ -12,10 +12,11 @@ namespace AssetManagement.Models.AssetManagement
         public int ResourceId { get; set; }
 
         [Required]
+        [Display (Name = "Resource Name")]
         public string ResourceName { get; set; }
 
         [Required]
-        public string Quantity { get; set; }
+        public int Quantity { get; set; }
 
         [Required]
         public string Description { get; set; }
@@ -28,7 +29,10 @@ namespace AssetManagement.Models.AssetManagement
         public Boolean IsActive { get; set; }
 
         public int FacilityId { get; set; }
+
+        [Display (Name = "Facility Name")]
         public string FacilityName { get; set; }
+
         public Facility Facility { get; set; }
 
     }

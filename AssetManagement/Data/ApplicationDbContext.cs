@@ -13,6 +13,7 @@ namespace AssetManagement.Data
     {
         public DbSet<Facility> Facilities { get; set; }
         public DbSet<Resource> Resources { get; set; }
+        public DbSet<ResourceInventory> ResourceInventories { get; set; }
 
         public ApplicationDbContext()
             : base("DefaultConnection", throwIfV1Schema: false)
@@ -23,5 +24,9 @@ namespace AssetManagement.Data
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<AssetManagement.Models.AssetManagement.ResourceCheckViewModel> ResourceCheckViewModels { get; set; }
+
+        public System.Data.Entity.DbSet<AssetManagement.Models.AssetManagement.ResourceCheckList> ResourceCheckLists { get; set; }
     }
 }

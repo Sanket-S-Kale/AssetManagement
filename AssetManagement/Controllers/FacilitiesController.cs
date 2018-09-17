@@ -9,18 +9,35 @@ using System.Web.Mvc;
 using AssetManagement.Data;
 using AssetManagement.Models;
 using AssetManagement.Models.AssetManagement;
+using Microsoft.AspNet.Identity;
 
 namespace AssetManagement.Controllers
 {
     public class FacilitiesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
+        
 
         // GET: Facilities
         [Authorize(Roles = "Admin, Resource Checker")]
         public ActionResult Index()
         {
-            return View(db.Facilities.ToList());
+            var user = System.Web.HttpContext.Current.User.Identity.GetUserId();
+            if (User.IsInRole("Admin"))
+            {
+                return View(db.Facilities.Where(f => f.IsActive == true).ToList());
+            }
+            else
+            {
+                return View(db.Facilities.Where(f => f.IsActive == true && f.UserId == user).ToList());
+            }
+            
+        }
+
+        public ActionResult ResourcesList(int id)
+        {
+            var relatedResources = db.Facilities.Include(r => r.Resources).SingleOrDefault(f => f.FacilityId == id);
+            return View(relatedResources);
         }
 
         // GET: Facilities/Details/5
@@ -92,6 +109,8 @@ namespace AssetManagement.Controllers
         {
             if (ModelState.IsValid)
             {
+                facility.UpdatedOn = DateTime.Now;
+                facility.IsActive = true;
                 db.Entry(facility).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -122,7 +141,13 @@ namespace AssetManagement.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Facility facility = db.Facilities.Find(id);
-            db.Facilities.Remove(facility);
+            List<Resource> resources = db.Resources.Where(r => r.FacilityId == id).ToList();
+            foreach (var resource in resources)
+            {
+                resource.IsActive = false;
+            }
+            facility.IsActive = false;
+            //db.Facilities.Remove(facility);
             db.SaveChanges();
             return RedirectToAction("Index");
         }

@@ -73,7 +73,7 @@
         @Html.LabelFor(m => m.FacilityList, new { @class = "col-md-2 control-label" })
         <div class="col-md-10">
             @*@Html.ListBoxFor(m => m.FacilityList, new MultiSelectList(@ViewBag.Facilities, "FacilityId", "Name"), null)*@
-            @Html.DropDownList("FacilityList", (MultiSelectList)ViewBag.Facilities, new { multiple = "multiple" })
+            @Html.DropDownList("FacilityList", (MultiSelectList)ViewBag.Facilities, new { multiple = "multiple", @class = "form-control" })
         </div>
     </div>
 

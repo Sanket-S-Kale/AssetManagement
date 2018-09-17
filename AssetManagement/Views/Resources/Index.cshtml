@@ -4,7 +4,7 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Resources</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
@@ -35,9 +35,9 @@
         <th>
             @Html.DisplayNameFor(model => model.UpdatedOn)
         </th>
-        <th>
+        @*<th>
             @Html.DisplayNameFor(model => model.IsActive)
-        </th>
+        </th>*@
         <th></th>
     </tr>
 
@@ -67,9 +67,9 @@
         <td>
             @Html.DisplayFor(modelItem => item.UpdatedOn)
         </td>
-        <td>
+        @*<td>
             @Html.DisplayFor(modelItem => item.IsActive)
-        </td>
+        </td>*@
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.ResourceId }) |
             @Html.ActionLink("Details", "Details", new { id=item.ResourceId }) |

@@ -8,10 +8,15 @@ namespace AssetManagement.Models.AssetManagement
 {
     public class Facility : BaseEntity
     {
+        public Facility()
+        {
+            Resources = new List<Resource>();
+        }
         [Key]
         public int FacilityId { get; set; }
 
         [Required]
+        [Display (Name = "Facility Name")]
         public string FacilityName { get; set; }
 
         public string Landmark { get; set; }
@@ -26,6 +31,7 @@ namespace AssetManagement.Models.AssetManagement
         public string State { get; set; }
 
         [MaxLength(5)]
+        [Display (Name = "Zip Code")]
         public string ZipCode { get; set; }
 
         public List<Resource> Resources { get; set; }

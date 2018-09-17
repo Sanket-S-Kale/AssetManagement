@@ -20,7 +20,7 @@ namespace AssetManagement.Controllers
         public ActionResult Index()
         {
             var resources = db.Resources.Include(r => r.Facility);
-            return View(resources.ToList());
+            return View(resources.Where(r => r.IsActive == true).ToList());
         }
 
         // GET: Resources/Details/5
@@ -99,6 +99,8 @@ namespace AssetManagement.Controllers
         {
             if (ModelState.IsValid)
             {
+                resource.UpdatedOn = DateTime.Now;
+                resource.IsActive = true;
                 db.Entry(resource).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -134,7 +136,7 @@ namespace AssetManagement.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             Resource resource = db.Resources.Find(id);
-            db.Resources.Remove(resource);
+            resource.IsActive = false;
             db.SaveChanges();
             return RedirectToAction("Index");
         }
